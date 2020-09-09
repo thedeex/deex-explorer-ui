@@ -1,0 +1,64 @@
+<div class="page page-table" data-ng-controller="operationsCtrl">
+    <div class="row">
+        <div class="col-md-6">
+            <ol class="breadcrumb">
+                <li><a href="#/"><span data-translate="Home"></span></a></li>
+                <li class="active"><a href="#/operations/"><span data-translate="Operations"></span></a></li>
+            </ol>
+        </div>
+        <div class="col-md-6">
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading"><span data-translate="Last operations"></span></div>
+        <div class="panel-body table-responsive">
+            <form>
+                <div class="col-md-8">
+                </div>
+                <div class="form-group col-md-4">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fas fa-search"></i></div>
+                        <input type="text" class="form-control" placeholder="Search for an operation" ng-model="search">
+                    </div>
+                </div>
+            </form>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th><span data-translate="Operation"></span></th>
+                    <th>ID</th>
+                    <th><span data-translate="Date and time"></span></th>
+                    <th><span data-translate="Block"></span></th>
+                    <th><span data-translate="Type"></span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="operation in operations | filter:search">
+                    <td><div ng-bind-html="operation.operation_text | to_trusted" layout-align="center"></div></td>
+                    <td><a href='#/operations/{{operation.operation_id}}/'>{{operation.operation_id}}</a></td>
+                    <td>{{operation.time}}</td>
+                    <td><a href='#/blocks/{{operation.block_num}}/'>{{operation.block_num | number}} </a></td>
+                    <td><span class="badge badge-primary" style="background-color: #{{operation.color}};">{{operation.type}}</span></td>
+                </tr>
+                </tbody>
+            </table>
+            <footer class="table-footer">
+                <div class="row">
+                    <div class="col-md-6 page-num-info">
+                    </div>
+                    <div class="col-md-6 text-right pagination-container">
+                        <ul uib-pagination class="pagination-sm"
+                            ng-model="currentPage"
+                            total-items="total_ops"
+                            max-size="4"
+                            ng-change="currentPage===undefined || select(currentPage)"
+                            items-per-page="20"
+                            rotate="false"
+                            previous-text="&lsaquo;" next-text="&rsaquo;"
+                            boundary-links="true"></ul>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>

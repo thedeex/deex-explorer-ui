@@ -1,0 +1,144 @@
+<div class="page page-dashboard" data-ng-controller="DashboardCtrl">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="row text-center">
+                <div class="col-sm-4 col-xs-6">
+                    <div class="well">
+                        <div class="box-info">
+                            <p class="size-h4">{{dynamic.head_block_number | number}}<span class="size-h4"></span></p>
+                            <p class="text-muted text-small"><span data-translate="BLOCK NUMBER"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-6">
+                    <div class="well">
+                        <div class="box-info">
+                            <p class="size-h4">{{dynamic.accounts_registered_this_interval}} <span class="size-h4"></span></p>
+                            <p class="text-muted text-small"><span data-translate="NEW USERS"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-6">
+                    <div class="well">
+                        <div class="box-info">
+                            <p class="size-h4">{{dynamic.deex_market_cap | number}}</p>
+                            <p class="text-muted text-small"><span data-translate="DEEX MARKET CAP"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-6">
+                    <div class="well">
+                        <div class="box-info">
+                            <p class="size-h4">{{dynamic.quote_volume | number}}</p>
+                            <p class="text-muted text-small"><span data-translate="DEEX/BTC VOLUME"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-6">
+                    <div class="well">
+                        <div class="box-info">
+                            <p class="size-h4">{{dynamic.witness_count | number}}</p>
+                            <p class="text-muted text-small"><span data-translate="WITNESSES"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-6">
+                    <div class="well">
+                        <div class="box-info">
+                            <p class="size-h4">{{dynamic.committee_count | number}}</p>
+                            <p class="text-muted text-small"><span data-translate="COMMITTEE"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a data-target="#operations" role="tab" data-toggle="tab"><span data-translate="Operations"></span></a></li>
+                        <li role="presentation"><a data-target="#proxies" role="tab" data-toggle="tab"><span data-translate="Proxies"></span></a></li>
+                        <li role="presentation"><a data-target="#markets" role="tab" data-toggle="tab"><span data-translate="Markets"></span></a></li>
+                        <li role="presentation"><a data-target="#smartcoin" role="tab" data-toggle="tab"><span data-translate="Smart coins"></span></a></li>
+                        <li role="presentation"><a data-target="#uia" role="tab" data-toggle="tab"><span data-translate="User issued assets"></span></a></li>
+                        <li role="presentation"><a data-target="#holders" role="tab" data-toggle="tab"><span data-translate="Holders"></span></a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="operations">
+                            <div style="width:100%;">
+                                <lz-chart config="operations_chart.options" style="min-height: 200px; width: 100%; min-width: 400px; margin-top: 10px"></lz-chart>
+                            </div></div>
+                        <div role="tabpanel" class="tab-pane" id="proxies">
+                            <div style="width:100%">
+                                <lz-chart config="proxies_chart.options" style="min-height: 200px; width: 100%; min-width: 400px; margin-top: 10px"></lz-chart>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="markets">
+                            <div style="width:100%">
+                                <lz-chart config="markets_chart.options" style="min-height: 200px; width: 100%; min-width: 400px; margin-top: 10px"></lz-chart>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="smartcoin">
+                            <div style="width:100%">
+                                <lz-chart config="smartcoins_chart.options" style="min-height: 200px; width: 100%; min-width: 400px; margin-top: 10px"></lz-chart>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="uia">
+                            <div style="width:100%">
+                                <lz-chart config="uias_chart.options" style="min-height: 200px; width: 100%; min-width: 400px; margin-top: 10px"></lz-chart>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="holders">
+                            <div style="width:100%">
+                                <lz-chart config="holders_chart.options" style="min-height: 200px; width: 100%; min-width: 400px; margin-top: 10px"></lz-chart>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th><span data-translate="Operation"></span></th>
+                        <th>ID</th>
+                        <th><span data-translate="Date and time"></span></th>
+                        <th><span data-translate="Block"></span></th>
+                        <th><span data-translate="Type"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="operation in operations track by $index">
+                    <td><div ng-bind-html="operation.operation_text | to_trusted" layout-align="center"></div></td>
+                    <td><a href='#/operations/{{operation.operation_id}}/'>{{operation.operation_id}}</a></td>
+                    <td>{{operation.time}}</td>
+					<td><a href='#/{{operation.block_num}}/'>{{operation.block_num | number}} </a></td>
+                    <td><span class="badge badge-primary" style="background-color: #{{operation.color}};">{{operation.type}}</span></td>
+                </tr>
+                </tbody>
+            </table>
+            <footer class="table-footer">
+                <div class="row">
+                    <div class="col-md-6 page-num-info">
+                    </div>
+                    <div class="col-md-6 text-right pagination-container">
+                        <ul uib-pagination class="pagination-sm"
+                            ng-model="currentPage"
+                            total-items="total_ops"
+                            max-size="4"
+                            ng-change="currentPage===undefined || select(currentPage)"
+                            items-per-page="20"
+                            rotate="false"
+                            previous-text="&lsaquo;" next-text="&rsaquo;"
+                            boundary-links="true"></ul>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>

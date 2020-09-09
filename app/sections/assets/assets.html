@@ -1,0 +1,151 @@
+<div class="page page-table" data-ng-controller="assetsCtrl">
+
+    <div class="row">
+        <div class="col-md-6">
+            <ol class="breadcrumb">
+                <li><a href="#/"><span data-translate="Home"></span></a></li>
+                <li class="active"><a href="#/assets/"><span data-translate="Assets"></span></a></li>
+            </ol>
+        </div>
+        <div class="col-md-6">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="row text-center">
+                <!-- Stats -->
+                <div class="col-sm-4 col-xs-6">
+                    <div class="well">
+                        <div class="box-info">
+                            <p class="size-h4">{{dynamic.volume_deex | number}}<span class="size-h4"></span></p>
+                            <p class="text-muted text-small"><span data-translate="24H VOLUME IN DEEX"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-6">
+                    <div class="well">
+                        <div class="box-info">
+                            <p class="size-h4">{{dynamic.volume_usd | number}} <span class="size-h4"></span></p>
+                            <p class="text-muted text-small"><span data-translate="24H VOLUME IN USD"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-6">
+                    <div class="well">
+                        <div class="box-info">
+                            <p class="size-h4">{{dynamic.volume_cny | number}}</p>
+                            <p class="text-muted text-small"><span data-translate="24H VOLUME IN CNY"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-6">
+                    <div class="well">
+                        <div class="box-info">
+                            <p class="size-h4">{{dynamic.market_cap_deex | number}}</p>
+                            <p class="text-muted text-small"><span data-translate="24H MARKET CAP IN DEEX"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-6">
+                    <div class="well">
+                        <div class="box-info">
+                            <p class="size-h4">{{dynamic.market_cap_usd | number}}</p>
+                            <p class="text-muted text-small"><span data-translate="24H MARKET CAP IN USD"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-6">
+                    <div class="well">
+                        <div class="box-info">
+                            <p class="size-h4">{{dynamic.market_cap_cny | number}}</p>
+                            <p class="text-muted text-small"><span data-translate="24H MARKET CAP IN CNY"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <lz-chart config="dex_volume_chart.options" style="min-height: 250px; width: 100%;"></lz-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+		<div class="panel-heading"><span data-translate="Assets"></span></div>
+        <div class="panel-body table-responsive">
+            <form>
+                <div class="col-md-8">
+                </div>
+                <div class="form-group col-md-4">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fas fa-search"></i></div>
+                        <input type="text" class="form-control" placeholder="Search for an asset" ng-model="search">
+                    </div>
+                </div>
+            </form>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th ng-click='sortColumn("name")' ng-class='sortClass("name")'><span data-translate="Name"></span>
+                        </th>
+                        <th class="align-right" ng-click='sortColumn("price")' ng-class='sortClass("price")'><span data-translate="Price"></span>
+
+                        </th>
+                        <th class="align-right" ng-click='sortColumn("volume")' ng-class='sortClass("volume")'>24H <span data-translate="volume"></span>
+                        </th>
+						<th ng-click='sortColumn("type")' ng-class='sortClass("type")'><span data-translate="Type"></span>
+                        </th>
+						<th class="align-right" ng-click='sortColumn("market_cap")' ng-class='sortClass("market_cap")'><span data-translate="Market cap"></span>
+                        </th>
+                        <th class="align-right" ng-click='sortColumn("supply")' ng-class='sortClass("supply")'><span data-translate="Supply"></span>
+                        </th>
+                        <th class="align-right" ng-click='sortColumn("holders")' ng-class='sortClass("holders")'><span data-translate="Holders"></span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="asset in assets | orderBy:column:reverse | filter:search" >
+                    <td><img ng-src="{{ asset.image_url || 'images/asset-symbols/deex.png' }}" width="30"/></td>
+                    <td><a href='#/assets/{{asset.id}}/'>{{asset.name}}</a></td>
+                    <td class="align-right">{{asset.price | number}} <a href='#/assets/1.3.0/'>DEEX</a></td>
+                    <td class="align-right">{{asset.volume | number}} <a href='#/assets/1.3.0/'>DEEX</a></td>
+                    <td>{{asset.type}} <span ng-if="asset.market_cap == '-'">(Gateway)</span><span ng-if="asset.market_cap != '-'">(Native)</span></td>
+					<td class="align-right">
+                        <div ng-if="asset.market_cap == '-'">
+                            -
+                        </div>
+                        <div ng-if="asset.market_cap != '-'">
+                            {{asset.market_cap | number}} <a href='#/assets/1.3.0/'>DEEX</a>
+                        </div>
+                    </td>
+                    <td class="align-right">
+
+                        <div ng-if="asset.supply == '-'">
+                            -
+                        </div>
+                        <div ng-if="asset.supply != '-'">
+                            <span ng-if="asset.name == 'CNY'"><i class="fas fa-cny"></i></span>
+                            <span ng-if="asset.name == 'USD'"><i class="fas fa-usd"></i></span>
+                            <span ng-if="asset.name == 'OPEN.BTC'"><i class="fas fa-btc"></i></span>
+                            <span ng-if="asset.name == 'BTC'"><i class="fas fa-btc"></i></span>
+                            <span ng-if="asset.name == 'JPY'"><i class="fas fa-jpy"></i></span>
+                            <span ng-if="asset.name == 'GBP'"><i class="fas fa-gbp"></i></span>
+                            <span ng-if="asset.name == 'EUR'"><i class="fas fa-eur"></i></span>
+                            <span ng-if="asset.name == 'AUD'"><i class="fas fa-usd"></i></span>
+                            <span ng-if="asset.name == 'CAD'"><i class="fas fa-usd"></i></span>
+                            {{asset.supply | number}}
+                        </div>
+
+                    </td>
+                    <td class="align-right">{{asset.holders| number}}</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
